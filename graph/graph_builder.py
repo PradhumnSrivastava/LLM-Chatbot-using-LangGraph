@@ -2,6 +2,7 @@ from langgraph.graph import StateGraph, START, END
 from graph.nodes import generate_response
 from graph.nodes import update_history
 from graph.state import State
+from graph.checkpointer import checkpointer
 
 
 #Define the state graph using the State TypedDict
@@ -13,4 +14,4 @@ graph.add_edge(START, "generate_response")
 graph.add_edge("generate_response", "update_history")
 graph.add_edge("update_history", END)
 
-workflow = graph.compile()
+workflow = graph.compile(checkpointer=checkpointer)

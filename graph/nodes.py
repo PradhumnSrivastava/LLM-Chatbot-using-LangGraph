@@ -3,24 +3,39 @@ from llm.huggingface import llm
 from langchain.messages import HumanMessage, AIMessage, SystemMessage
 
 def generate_response(state: State) -> State:
-    """
-    Generate a response using the configured LLM and
-    update the graph state with the generated response.
-    """
-    response = llm.invoke(state['message'])
-    state['response'] = response
-    return state
+
+    temp_history = []
+
+    for turn in state.get("history", []):
+        temp_history.append(turn["HumanMessage"])
+        temp_history.append(turn["AIMessage"])
+
+    temp_history.append(
+        HumanMessage(content=state["message"])
+    )
+
+    response = llm.invoke(temp_history)
+
+    return {
+        "response": response
+    }
 
 
 def update_history(state: State) -> State:
     """
-    This function updates the conversation history
-    with the current Human and AI messages.
+    Update conversation history with the current
+    HumanMessage and AIMessage.
     """
 
-    state["history"].append({
-        "HumanMessage": HumanMessage(content=state["message"]),
-        "AIMessage": AIMessage(content=state["response"])
-    })
+    new_history = {
+        "HumanMessage": HumanMessage(
+            content=state["message"]
+        ),
+        "AIMessage": AIMessage(
+            content=state["response"]
+        )
+    }
 
-    return state
+    return {
+        "history": [new_history]
+    }

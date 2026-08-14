@@ -1,3 +1,3 @@
-from langchain.checkpoint.memory import InMemorySaver
+from langgraph.checkpoint.memory import InMemorySaver
 
-checkpoint = InMemorySaver()
+checkpointer = InMemorySaver()

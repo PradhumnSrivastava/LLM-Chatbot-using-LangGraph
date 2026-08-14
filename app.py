@@ -1,9 +1,29 @@
 from graph.graph_builder import workflow
 
-result = workflow.invoke({
-    "message": "Hello My Name is Pradhumn Srivastava",
-    "thread_id": "thread_1",
-    "history": []
-})
 
-print(result)
+config = {
+    "configurable": {
+        "thread_id": "thread_1"
+    }
+}
+
+
+result1 = workflow.invoke(
+    {
+        "message": "My name is Pradhumn Srivastava.",
+        "history": []
+    },
+    config=config
+)
+
+print("First:", result1)
+
+
+result2 = workflow.invoke(
+    {
+        "message": "What is my name?"
+    },
+    config=config
+)
+
+print("Second:", result2)
